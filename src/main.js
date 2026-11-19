@@ -3,6 +3,10 @@ import * as XLSX from 'xlsx';
 
 const STORAGE_KEY = 'holiday-wishbook-v1';
 
+function publicUrl(path) {
+  return `${import.meta.env.BASE_URL}${String(path).replace(/^\//, '')}`;
+}
+
 const state = {
   catalog: null,
   kids: [],
@@ -405,7 +409,7 @@ function renderPages(root) {
 
   const stage = document.createElement('div');
   stage.className = 'page-stage';
-  stage.innerHTML = `<img src="/${page.thumb}" alt="Toy Book page ${page.bookPage}" />`;
+  stage.innerHTML = `<img src="${publicUrl(page.thumb)}" alt="Toy Book page ${page.bookPage}" />`;
   wrap.appendChild(stage);
 
   const grid = document.createElement('div');
@@ -529,7 +533,7 @@ function render() {
 
 async function boot() {
   loadStore();
-  const res = await fetch('/catalog.json');
+  const res = await fetch(publicUrl('catalog.json'));
   state.catalog = await res.json();
   if (!state.kids.length) state.showAddKid = true;
   render();
