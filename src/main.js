@@ -64,7 +64,7 @@ function toast(msg) {
 
 function toggleWant(asin) {
   if (!state.activeKidId) {
-    toast('Pick who is shopping first');
+    toast('Tell Santa your name first');
     state.showAddKid = true;
     render();
     return;
@@ -72,10 +72,10 @@ function toggleWant(asin) {
   const list = new Set(state.wantsByKid[state.activeKidId] || []);
   if (list.has(asin)) {
     list.delete(asin);
-    toast('Removed from list');
+    toast('Back on the shelf');
   } else {
     list.add(asin);
-    toast('Wanted!');
+    toast('In your sack!');
   }
   state.wantsByKid[state.activeKidId] = [...list];
   saveStore();
@@ -188,7 +188,7 @@ function toyCard(item, wants, delay = 0) {
   el.className = 'toy';
   el.style.animationDelay = `${Math.min(delay, 12) * 0.03}s`;
   el.innerHTML = `
-    <button type="button" class="want-badge ${wanted ? 'on' : ''}" aria-label="${wanted ? 'Unwant' : 'Want'} ${escapeHtml(item.name)}">★</button>
+    <button type="button" class="want-badge ${wanted ? 'on' : ''}" aria-label="${wanted ? 'Put back' : 'Grab'} ${escapeHtml(item.name)}">${wanted ? '★' : '☆'}</button>
     <div class="toy-visual">
       <img src="${item.imageUrl}" alt="" loading="lazy" data-asin="${item.asin}" />
     </div>
@@ -225,8 +225,17 @@ function renderHero(root) {
   hero.className = 'hero';
   const active = state.kids.find((k) => k.id === state.activeKidId);
   hero.innerHTML = `
-    <h1 class="brand">Wish Book</h1>
-    <p class="tagline">Tap the toys you want from Amazon’s 2026 Holiday Gift Book. Parents can export the list later.</p>
+    <div class="workshop-sign">
+      <svg class="santa-hat" viewBox="0 0 88 64" aria-hidden="true">
+        <path d="M20 50c6-28 18-40 48-34-12 6-18 18-12 34" fill="#d7263d"/>
+        <path d="M22 48c8-22 18-32 42-28" fill="none" stroke="#8e1528" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="66" cy="16" r="9" fill="#fff"/>
+        <ellipse cx="34" cy="52" rx="28" ry="10" fill="#fff"/>
+      </svg>
+      <p class="eyebrow">Here is Santa's workshop</p>
+      <h1 class="brand">Grab your gifts</h1>
+    </div>
+    <p class="tagline">Tap a toy and it drops in your sack. Grown-ups can take the list home.</p>
   `;
 
   const who = document.createElement('div');
@@ -248,7 +257,7 @@ function renderHero(root) {
   const add = document.createElement('button');
   add.type = 'button';
   add.className = 'kid-chip add';
-  add.textContent = state.kids.length ? '+ Add kid' : '+ Who’s shopping?';
+  add.textContent = state.kids.length ? '+ Add a kid' : "+ What's your name?";
   add.addEventListener('click', () => {
     state.showAddKid = !state.showAddKid;
     render();
@@ -260,7 +269,7 @@ function renderHero(root) {
     const form = document.createElement('form');
     form.className = 'add-kid';
     form.innerHTML = `
-      <input name="name" maxlength="24" placeholder="Kid’s name" autocomplete="off" required />
+      <input name="name" maxlength="24" placeholder="Your name" autocomplete="off" required />
       <button type="submit">Save</button>
     `;
     form.addEventListener('submit', (e) => {
@@ -273,14 +282,14 @@ function renderHero(root) {
       state.activeKidId = kid.id;
       state.showAddKid = false;
       saveStore();
-      toast(`Hi, ${name}!`);
+      toast(`Ho ho ho, ${name}!`);
       render();
     });
     who.appendChild(form);
   } else if (active) {
     const hint = document.createElement('p');
     hint.className = 'screen-hint';
-    hint.textContent = `${active.name} is picking · ${activeWants().size} wanted`;
+    hint.textContent = `${active.name} is grabbing gifts · ${activeWants().size} in the sack`;
     who.appendChild(hint);
   }
 
@@ -296,7 +305,7 @@ function renderBrowse(root) {
 
   const toolbar = document.createElement('div');
   toolbar.className = 'toolbar';
-  toolbar.innerHTML = `<input class="search" type="search" placeholder="Search toys…" value="${escapeHtml(state.query)}" />`;
+  toolbar.innerHTML = `<input class="search" type="search" placeholder="Find a gift…" value="${escapeHtml(state.query)}" />`;
   const search = toolbar.querySelector('.search');
   search.addEventListener('input', () => {
     state.query = search.value;
@@ -336,7 +345,7 @@ function renderBrowse(root) {
 
   const title = document.createElement('h2');
   title.className = 'view-title';
-  title.textContent = `${items.length} toys to explore`;
+  title.textContent = `${items.length} gifts on the shelves`;
   root.appendChild(title);
 
   const grid = document.createElement('div');
@@ -344,7 +353,7 @@ function renderBrowse(root) {
   grid.id = 'toy-grid';
   items.slice(0, 240).forEach((item, i) => grid.appendChild(toyCard(item, wants, i)));
   if (!items.length) {
-    grid.innerHTML = `<p class="empty">No toys match that search.</p>`;
+    grid.innerHTML = `<p class="empty">No gifts by that name. Try another!</p>`;
   } else if (items.length > 240) {
     const more = document.createElement('p');
     more.className = 'empty';
@@ -357,11 +366,11 @@ function renderBrowse(root) {
 
   function renderListOnly() {
     const next = filteredItems();
-    title.textContent = `${next.length} toys to explore`;
+    title.textContent = `${next.length} gifts on the shelves`;
     grid.innerHTML = '';
     const w = activeWants();
     next.slice(0, 240).forEach((item, i) => grid.appendChild(toyCard(item, w, i)));
-    if (!next.length) grid.innerHTML = `<p class="empty">No toys match that search.</p>`;
+    if (!next.length) grid.innerHTML = `<p class="empty">No gifts by that name. Try another!</p>`;
   }
 }
 
@@ -377,7 +386,7 @@ function renderPages(root) {
 
   const title = document.createElement('h2');
   title.className = 'view-title';
-  title.textContent = 'Flip the book';
+  title.textContent = 'The toy book';
   root.appendChild(title);
 
   const wrap = document.createElement('div');
@@ -425,15 +434,15 @@ function renderWishes(root) {
   const kid = state.kids.find((k) => k.id === state.activeKidId);
   const title = document.createElement('h2');
   title.className = 'view-title';
-  title.textContent = kid ? `${kid.name}’s wishes` : 'Wishes';
+  title.textContent = kid ? `${kid.name}’s sack` : 'Your sack';
   root.appendChild(title);
 
   if (!kid) {
-    root.innerHTML += `<p class="empty">Add a kid first, then tap toys you want.</p>`;
+    root.innerHTML += `<p class="empty">Tell Santa your name, then grab your gifts.</p>`;
     return;
   }
   if (!items.length) {
-    root.innerHTML += `<p class="empty">Nothing wanted yet — go browse and tap the stars!</p>`;
+    root.innerHTML += `<p class="empty">Your sack is empty. Tap gifts to grab them!</p>`;
     return;
   }
   const grid = document.createElement('div');
@@ -492,9 +501,9 @@ function renderNav(root) {
   nav.className = 'bottom-nav';
   const count = activeWants().size;
   const tabs = [
-    { id: 'browse', label: 'Browse' },
-    { id: 'pages', label: 'Pages' },
-    { id: 'wishes', label: `Wishes${count ? `<span class="badge-count">${count}</span>` : ''}` },
+    { id: 'browse', label: 'Gifts' },
+    { id: 'pages', label: 'Book' },
+    { id: 'wishes', label: `Sack${count ? `<span class="badge-count">${count}</span>` : ''}` },
     { id: 'parents', label: 'Parents' },
   ];
   for (const tab of tabs) {

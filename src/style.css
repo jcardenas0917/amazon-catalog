@@ -1,19 +1,21 @@
 :root {
-  --pine: #0f3d32;
-  --pine-deep: #0a2a23;
-  --moss: #1f6b56;
-  --frost: #e8f4ef;
-  --snow: #f7fcfa;
-  --ice: #b7e0d4;
-  --candle: #e8a54b;
-  --candle-deep: #c67a22;
-  --berry: #d64550;
-  --ink: #143028;
-  --muted: #4a6b60;
-  --want: #e85d4c;
-  --shadow: 0 18px 40px rgba(10, 42, 35, 0.18);
+  --pine: #146c43;
+  --pine-deep: #10241c;
+  --moss: #1f8a4c;
+  --frost: #fff4e8;
+  --snow: #fffdf8;
+  --ice: #ffe4c4;
+  --candle: #f2c14e;
+  --candle-deep: #d3921a;
+  --berry: #d7263d;
+  --santa: #d7263d;
+  --suit: #8e1528;
+  --ink: #1c2e28;
+  --muted: #5c6b62;
+  --want: #d7263d;
+  --shadow: 0 18px 40px rgba(40, 8, 16, 0.22);
   --radius: 22px;
-  --font-display: "Fraunces", Georgia, serif;
+  --font-display: "Baloo 2", "Nunito", system-ui, sans-serif;
   --font-body: "Nunito", system-ui, sans-serif;
 }
 
@@ -32,10 +34,10 @@ body {
 
 body {
   background:
-    radial-gradient(ellipse 90% 60% at 10% -10%, rgba(232, 165, 75, 0.28), transparent 55%),
-    radial-gradient(ellipse 70% 50% at 95% 5%, rgba(183, 224, 212, 0.35), transparent 50%),
-    radial-gradient(ellipse 80% 40% at 50% 100%, rgba(31, 107, 86, 0.55), transparent 60%),
-    linear-gradient(165deg, #0a2a23 0%, #125043 42%, #0f3d32 100%);
+    radial-gradient(ellipse 80% 55% at 12% -8%, rgba(215, 38, 61, 0.5), transparent 55%),
+    radial-gradient(ellipse 55% 40% at 92% 0%, rgba(242, 193, 78, 0.38), transparent 50%),
+    radial-gradient(ellipse 80% 42% at 50% 108%, rgba(20, 108, 67, 0.75), transparent 62%),
+    linear-gradient(168deg, #2a0c16 0%, #6e1830 34%, #123c2c 100%);
   background-attachment: fixed;
 }
 
@@ -59,10 +61,11 @@ input {
 .flake {
   position: absolute;
   top: -12px;
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: rgba(247, 252, 250, 0.75);
+  background: rgba(255, 253, 248, 0.88);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.45);
   animation: fall linear infinite;
 }
 
@@ -83,18 +86,51 @@ input {
 
 /* —— Hero / who —— */
 .hero {
-  padding: 1.4rem 0 1rem;
+  padding: 0.35rem 0 1rem;
   animation: rise 0.7s ease both;
+}
+
+.workshop-sign {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  margin: 2.6rem 0 0.85rem;
+  padding: 1.15rem 1.4rem 0.95rem;
+  border-radius: 28px;
+  background:
+    linear-gradient(#fffdf8, #fff6e8) padding-box,
+    repeating-linear-gradient(115deg, #d7263d 0 12px, #fff 12px 20px, #146c43 20px 28px, #fff 28px 36px) border-box;
+  border: 9px solid transparent;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+}
+
+.santa-hat {
+  position: absolute;
+  top: -48px;
+  left: 18px;
+  width: 84px;
+  height: 62px;
+  overflow: visible;
+  pointer-events: none;
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.18));
+}
+
+.eyebrow {
+  margin: 0 0 0.1rem;
+  color: var(--suit);
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .brand {
   font-family: var(--font-display);
-  font-size: clamp(2.4rem, 8vw, 4.2rem);
+  font-size: clamp(2.3rem, 7vw, 3.7rem);
   line-height: 0.95;
-  letter-spacing: -0.03em;
-  color: var(--snow);
-  margin: 0 0 0.55rem;
-  text-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  letter-spacing: -0.02em;
+  color: var(--pine-deep);
+  margin: 0;
 }
 
 .tagline {
@@ -135,8 +171,8 @@ input {
 
 .kid-chip.active {
   background: var(--candle);
-  color: var(--pine-deep);
-  box-shadow: 0 10px 24px rgba(232, 165, 75, 0.35);
+  color: var(--suit);
+  box-shadow: 0 10px 24px rgba(242, 193, 78, 0.4);
 }
 
 .kid-chip.add {
@@ -170,7 +206,7 @@ input {
   border: 0;
   border-radius: 16px;
   padding: 0.9rem 1.1rem;
-  background: var(--moss);
+  background: var(--santa);
   color: white;
   font-weight: 800;
   cursor: pointer;
@@ -229,7 +265,7 @@ input {
 }
 
 .seg button.active {
-  background: var(--pine);
+  background: var(--santa);
   color: var(--snow);
 }
 
@@ -254,8 +290,8 @@ input {
 }
 
 .cat-btn.active {
-  background: var(--candle);
-  color: var(--pine-deep);
+  background: var(--santa);
+  color: var(--snow);
   transform: scale(1.04);
 }
 
@@ -297,7 +333,7 @@ input {
   border-radius: var(--radius);
   overflow: hidden;
   background:
-    linear-gradient(145deg, #d9efe7, #f7fcfa 55%, #ffe8c2);
+    linear-gradient(145deg, #ffe4e1, #fffdf8 52%, #ffe7b8);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -341,7 +377,7 @@ input {
   place-items: center;
   background: rgba(247, 252, 250, 0.92);
   color: var(--muted);
-  font-size: 1.2rem;
+  font-size: 1.35rem;
   cursor: pointer;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
   transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
@@ -535,7 +571,7 @@ input {
 }
 
 .bottom-nav button.active {
-  background: var(--pine);
+  background: var(--santa);
   color: var(--snow);
 }
 
@@ -557,7 +593,7 @@ input {
   left: 50%;
   bottom: 5.2rem;
   transform: translateX(-50%) translateY(12px);
-  background: var(--pine);
+  background: var(--suit);
   color: white;
   padding: 0.7rem 1rem;
   border-radius: 999px;
