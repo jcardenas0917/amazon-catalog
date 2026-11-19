@@ -75,7 +75,7 @@ function toggleWant(asin) {
     toast('Back on the shelf');
   } else {
     list.add(asin);
-    toast('In your sack!');
+    toast('In your bag!');
   }
   state.wantsByKid[state.activeKidId] = [...list];
   saveStore();
@@ -235,7 +235,7 @@ function renderHero(root) {
       <p class="eyebrow">Here is Santa's workshop</p>
       <h1 class="brand">Grab your gifts</h1>
     </div>
-    <p class="tagline">Tap a toy and it drops in your sack. Grown-ups can take the list home.</p>
+    <p class="tagline">Tap a toy and it drops in your bag. Grown-ups can take the list home.</p>
   `;
 
   const who = document.createElement('div');
@@ -289,7 +289,7 @@ function renderHero(root) {
   } else if (active) {
     const hint = document.createElement('p');
     hint.className = 'screen-hint';
-    hint.textContent = `${active.name} is grabbing gifts · ${activeWants().size} in the sack`;
+    hint.textContent = `${active.name} is grabbing gifts · ${activeWants().size} in the bag`;
     who.appendChild(hint);
   }
 
@@ -434,7 +434,7 @@ function renderWishes(root) {
   const kid = state.kids.find((k) => k.id === state.activeKidId);
   const title = document.createElement('h2');
   title.className = 'view-title';
-  title.textContent = kid ? `${kid.name}’s sack` : 'Your sack';
+  title.textContent = kid ? `${kid.name}’s bag` : 'Your bag';
   root.appendChild(title);
 
   if (!kid) {
@@ -442,7 +442,7 @@ function renderWishes(root) {
     return;
   }
   if (!items.length) {
-    root.innerHTML += `<p class="empty">Your sack is empty. Tap gifts to grab them!</p>`;
+    root.innerHTML += `<p class="empty">Your bag is empty. Tap gifts to grab them!</p>`;
     return;
   }
   const grid = document.createElement('div');
@@ -503,7 +503,7 @@ function renderNav(root) {
   const tabs = [
     { id: 'browse', label: 'Gifts' },
     { id: 'pages', label: 'Book' },
-    { id: 'wishes', label: `Sack${count ? `<span class="badge-count">${count}</span>` : ''}` },
+    { id: 'wishes', label: `Bag${count ? `<span class="badge-count">${count}</span>` : ''}` },
     { id: 'parents', label: 'Parents' },
   ];
   for (const tab of tabs) {
